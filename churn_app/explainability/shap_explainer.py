@@ -2,8 +2,8 @@ import shap
 import joblib
 import matplotlib.pyplot as plt
 
-model = joblib.load("artifacts/model.pkl")
-feature_names = joblib.load("artifacts/feature_names.pkl")
+model = joblib.load("churn_app/artifacts/model.pkl")
+feature_names = joblib.load("churn_app/artifacts/feature_names.pkl")
 
 explainer = shap.TreeExplainer(model)
 

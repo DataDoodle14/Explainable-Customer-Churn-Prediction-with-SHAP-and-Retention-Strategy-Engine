@@ -1,7 +1,7 @@
 import joblib
 
 # Load artifacts once
-FEATURE_NAMES = joblib.load("artifacts/feature_names.pkl")
+FEATURE_NAMES = joblib.load("churn_app/artifacts/feature_names.pkl")
 
 RETENTION_ACTIONS = {
     "isactivemember": {

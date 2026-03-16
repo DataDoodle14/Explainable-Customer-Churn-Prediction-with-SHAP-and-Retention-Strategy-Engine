@@ -1,7 +1,7 @@
 import joblib
 import pandas as pd
 
-preprocessor = joblib.load("artifacts/preprocessor.pkl")
+preprocessor = joblib.load("churn_app/artifacts/preprocessor.pkl")
 
 def preprocess_input(user_input: dict):
     df = pd.DataFrame([user_input])

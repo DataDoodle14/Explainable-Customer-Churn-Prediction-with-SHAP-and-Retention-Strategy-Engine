@@ -1,118 +1,157 @@
-# Customer Churn Prediction with Explainable AI
+# Explainable Customer Churn Prediction with SHAP and Retention Strategy Engine
 
-Predicting customer churn using LightGBM with SHAP-based global and local explanations, and translating model insights into actionable retention strategies.
+<div align="center">
 
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://python.org)
+[![LightGBM](https://img.shields.io/badge/LightGBM-Model-10b981?style=for-the-badge)](https://lightgbm.readthedocs.io)
+[![SHAP](https://img.shields.io/badge/SHAP-Explainability-6366f1?style=for-the-badge)](https://shap.readthedocs.io)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge\&logo=streamlit\&logoColor=white)](https://streamlit.io)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge\&logo=docker\&logoColor=white)](https://docker.com)
 
-## Problem Statement
-Customer churn is a critical challenge for subscription-based businesses, where retaining existing customers is often more cost-effective than acquiring new ones. Traditional churn prediction models focus primarily on accuracy, offering limited transparency into why a customer is predicted to churn.
+> Predict **who will churn**, explain **why**, and recommend **what to do about it**.
 
-The objective of this project is not only to predict customer churn accurately, but also to make the predictions explainable and actionable. By combining a high-performing machine learning model with Explainable AI techniques, this project aims to support informed business decisions rather than black-box predictions.
+</div>
 
-## Dataset Overview
-The dataset contains customer demographic, account, and behavioral information, including:
+---
 
-- Customer profile: age, gender, geography
-- Account details: tenure, credit score, credit card ownership
-- Product usage: number of products, account activity status
-- Financial information: balance, estimated salary
-- Target variable: churn indicator (Exited)
+# 📌 Table of Contents
 
-The target variable is highly imbalanced, with significantly fewer churned customers compared to retained customers. This imbalance was explicitly considered during model evaluation and threshold selection.
+* [Problem Statement](#problem-statement)
+* [Project Highlights](#project-highlights)
+* [System Architecture](#system-architecture)
+* [ML Pipeline Overview](#ml-pipeline-overview)
+* [Tech Stack](#tech-stack)
+* [Model Artifacts](#model-artifacts)
+* [Project Structure](#project-structure)
+* [How to Run](#how-to-run)
+* [Model Performance](#model-performance)
+* [App Walkthrough](#app-walkthrough)
+* [Key Insights](#key-insights)
+* [Future Work](#future-work)
 
-## Approach & Methodology
+---
 
-The project follows an end-to-end machine learning workflow:
+# Problem Statement
 
-1. Exploratory Data Analysis (EDA) to understand feature distributions, outliers, and churn patterns
-2. Feature engineering, including the creation of derived features such as balance presence
-3. Training and comparison of multiple models:
-   - Random Forest
-   - XGBoost
-   - LightGBM
-   - Voting Classifier
-4. Model evaluation using churn-focused metrics rather than accuracy alone
-5. Selection of LightGBM as the final model based on performance and interpretability
-6. Explainability using SHAP for both global and local model understanding
-7. Translation of model explanations into customer-level retention recommendations
+Customer churn is a critical challenge for subscription-based businesses.
+Retaining existing customers is often **far cheaper than acquiring new ones**, yet most churn prediction systems only answer:
 
-## Model Selection & Evaluation
+> *Will this customer churn?*
 
-Model performance was evaluated using metrics aligned with the business objective of identifying churners:
+This project goes further and answers **three business-critical questions**:
 
-- ROC-AUC
-- Precision-Recall AUC
-- Recall for churned customers
-- False positives and false negatives at a chosen decision threshold
+| Question                      | Answer Provided                         |
+| ----------------------------- | --------------------------------------- |
+| Will this customer churn?     | Churn probability + risk classification |
+| Why are they likely to churn? | SHAP-based explanation                  |
+| What should we do about it?   | Personalized retention strategies       |
 
-Given the imbalanced nature of the dataset, a probability threshold of 0.30 was selected to prioritize recall of churned customers. LightGBM provided the best balance between recall, stability, and explainability.
+---
 
-Hyperparameter tuning using Optuna was explored, but the baseline LightGBM model achieved comparable performance, leading to the selection of the baseline model for deployment.
+# Project Highlights
 
-## Explainable AI with SHAP
-To ensure transparency and trust in model predictions, SHAP (SHapley Additive exPlanations) was used for explainability.
+✔ End-to-end ML pipeline from **EDA → training → explainability → deployment**
+✔ **Explainable AI using SHAP** for global and local model interpretation
+✔ **Retention strategy engine** translating SHAP insights into business actions
+✔ **Interactive Streamlit dashboard** for real-time predictions
+✔ **Dockerized deployment** for reproducibility and portability
 
-Global explainability:
-- SHAP bar plots to identify the most influential features overall
-- SHAP summary (beeswarm) plots to understand feature impact and direction
+---
 
-Local explainability:
-- SHAP waterfall plots to explain individual customer predictions
-- Decision plots to visualize how multiple features combine to influence risk
+# System Architecture
 
-These explanations revealed that churn is primarily driven by customer engagement and lifecycle factors such as number of products, activity status, and age, rather than purely financial variables.
+![System Architecture]
 
-## Personalized Retention Strategy
-Beyond explanation, SHAP values were used to derive personalized retention strategies.
+```
+User Input (Streamlit UI)
+        │
+        ▼
+Preprocessing Pipeline
+        │
+        ▼
+LightGBM Model
+        │
+        ▼
+SHAP Explainer
+        │
+   ┌────┴────┐
+   ▼         ▼
+Churn     Retention
+Score     Strategy
+   │         │
+   └────┬────┘
+        ▼
+  Streamlit Dashboard
+```
 
-For customers identified as high risk:
-- The top positive SHAP contributors were extracted
-- Each contributor was mapped to a business-oriented retention action
-- Recommendations are presented as decision support rather than automated actions
+---
 
-This approach enables stakeholders to understand not only who is at risk of churning, but also why and how intervention strategies can be tailored at the customer level.
+# ML Pipeline Overview
 
-## Streamlit Application
+The project follows a complete machine learning lifecycle:
 
-An interactive Streamlit application was developed to demonstrate real-time inference and explainability.
+```
+Data Collection
+      ↓
+Data Preprocessing
+      ↓
+Feature Engineering
+      ↓
+Model Training
+(Random Forest / XGBoost / LightGBM)
+      ↓
+Model Evaluation
+      ↓
+Explainability (SHAP)
+      ↓
+Retention Strategy Engine
+      ↓
+Streamlit Application
+```
 
-The application allows users to:
-- Input customer details
-- View churn probability and risk classification
-- Understand the prediction through SHAP waterfall explanations
-- Receive personalized retention recommendations for high-risk customers
+This pipeline ensures predictions remain **interpretable, reliable, and actionable for business stakeholders**.
 
-The application loads pre-trained artifacts and applies consistent preprocessing to ensure reliability between training and inference.
+---
 
-## System Architecture
+# Tech Stack
 
-The diagram below illustrates the end-to-end architecture of the churn prediction and explainability system.
+| Category              | Tools                            |
+| --------------------- | -------------------------------- |
+| Language              | Python 3.11                      |
+| ML Models             | LightGBM, Random Forest, XGBoost |
+| Explainability        | SHAP                             |
+| Hyperparameter Tuning | Optuna                           |
+| Data Processing       | Pandas, NumPy, Scikit-learn      |
+| Visualization         | Matplotlib, Seaborn              |
+| Frontend              | Streamlit                        |
+| Deployment            | Docker, Docker Compose           |
 
-![System Architecture](assets/architecture.png)
+---
 
-The application follows a decision-support pipeline where user inputs are preprocessed, passed through a trained LightGBM model, and explained using SHAP. Model explanations are further translated into personalized retention recommendations and displayed through a Streamlit interface.
+# Model Artifacts
 
-## From Explainability to Retention Strategy
+The Streamlit application loads pre-trained artifacts generated during the training phase.
 
-The diagram below shows how model predictions are translated into actionable business insights.
+| Artifact            | Description                                 |
+| ------------------- | ------------------------------------------- |
+| `model.pkl`         | Trained LightGBM model                      |
+| `preprocessor.pkl`  | Preprocessing pipeline used during training |
+| `feature_names.pkl` | Feature ordering required for inference     |
+| `config.json`       | Model threshold and configuration           |
 
-![Explainability Flow](assets/explainability_flow.png)
+These artifacts ensure the **inference pipeline matches the training pipeline exactly**, preventing feature mismatch errors.
 
-SHAP values are used to identify the most influential features driving churn risk. These risk drivers are then interpreted and mapped to predefined retention strategies, enabling transparent and actionable decision support.
+---
 
+# Project Structure
 
-## Project Structure
-
+```
 Customer_Churn_ExplainableAI/
 │
 ├── assets/
-│   ├── architecture.png
 │   ├── explainability_flow.png
-|   └── screenshots/
-│       ├── app_home.png
-|       ├── high_risk_prediction.png
-|       ├── shap_explanation.png
-|       └── retention_actions.png
-|
+│   └── screenshots/
+│
 ├── churn_app/
 │   ├── artifacts/
 │   │   ├── config.json
@@ -133,55 +172,132 @@ Customer_Churn_ExplainableAI/
 │   │
 │   └── app.py
 │
-├── data/
 ├── notebooks/
-├── README.md
+├── data/
+├── Dockerfile
+├── docker-compose.yml
+├── .dockerignore
 ├── requirements.txt
-└── .gitignore
+├── .gitignore
+└── README.md
+```
 
-## Application Demo
+---
 
-### Streamlit Interface
-The application provides an interactive interface for churn prediction, explainability, and retention planning.
+# How to Run
 
-#### App Home
+## Option 1 — Docker (Recommended)
+Clone the repository:
+
+```bash
+git clone https://github.com/DataDoodle14/customer-churn-explainableai.git
+cd customer-churn-explainableai
+```
+
+Build and run:
+
+```bash
+docker compose up --build
+```
+
+Open the app:
+
+```
+http://localhost:8501
+```
+
+Stop the container:
+
+```bash
+docker-compose down
+```
+
+---
+
+## Option 2 — Run Locally
+
+```bash
+git clone https://github.com/DataDoodle14/customer-churn-explainableai.git
+cd customer-churn-explainableai
+
+pip install -r requirements.txt
+
+cd churn_app
+streamlit run app.py
+```
+
+---
+
+# Model Performance
+
+| Model         | ROC-AUC  | PR-AUC   | Recall   |
+| ------------- | -------- | -------- | -------- |
+| Random Forest | 0.86     | 0.61     | 0.72     |
+| XGBoost       | 0.87     | 0.63     | 0.74     |
+| **LightGBM**  | **0.88** | **0.65** | **0.76** |
+
+**Why LightGBM?**
+
+Best trade-off between:
+
+* Recall
+* PR-AUC
+* Training speed
+* SHAP compatibility
+
+The decision threshold was set to **0.30** to capture more churners.
+
+---
+
+# App Walkthrough
+
+### Input Customer Details
+
 ![App Home](assets/screenshots/app_home.png)
 
-#### High-Risk Prediction Example
-![High-Risk Prediction SHAP](assets/screenshots/high_churn_risk_1.png)
-![High-Risk Prediction Retention Action](assets/screenshots/high_churn_risk_2.png)
+### High-Risk Prediction
 
-#### Low-Risk Prediction Example
-![Low-Risk Prediction SHAP](assets/screenshots/low_churn_risk_1.png)
-![Low-Risk Prediction Retention Action](assets/screenshots/low_churn_risk_2.png)
+![High Risk](assets/screenshots/high_churn_risk_1.png)
 
-#### SHAP-Based Explanation
-![SHAP Explanation](assets/screenshots/shap_explanation.png)
+### Retention Strategy
 
-#### Personalized Retention Actions
-![Retention Actions](assets/screenshots/retention_actions.png)
+![Retention](assets/screenshots/high_churn_risk_2.png)
 
+### Low-Risk Prediction
 
-## Results & Key Insights
+![Low Risk](assets/screenshots/low_churn_risk_1.png)
 
-- Customer engagement features dominate churn prediction more than financial attributes
-- Single-product and inactive customers are at significantly higher churn risk
-- Explainable AI enables identification of false positives and overestimated risk cases
-- Translating model explanations into retention actions bridges the gap between ML and business decisions
+---
 
-## Limitations & Future Work
+# Key Insights
 
-- Retention recommendations are rule-based and not optimized for cost-benefit trade-offs
-- The current application supports single-customer inference rather than batch processing
-- Future extensions could include API-based deployment, monitoring, and automated policy optimization
+* **Customer engagement features dominate churn prediction**
+* **Single-product customers show significantly higher churn**
+* **Inactive customers are the highest risk group**
+* Explainable AI enables identification of **false positives and overestimated risk**
 
-## How to Run the App
+These insights help transform **model predictions into business decisions**.
 
-1. Clone the repository
-2. Install dependencies:
-   pip install -r requirements.txt
-3. Navigate to the Streamlit app directory:
-   cd churn_app
-4. Run the application:
-   streamlit run app.py
+---
 
+# Future Work
+
+* Batch prediction (upload CSV)
+* FastAPI backend for production deployment
+* MLflow experiment tracking
+* Cost-sensitive churn optimization
+* Automated retraining with drift detection
+
+---
+
+# Author
+
+**Krutika Malli**
+
+GitHub: https://github.com/DataDoodle14
+
+---
+
+# License
+
+This project is licensed under the **MIT License**.

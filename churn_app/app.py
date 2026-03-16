@@ -10,7 +10,7 @@ from explainability.retention_logic import generate_retention_plan
 
 st.set_page_config(page_title="Churn XAI", layout="wide")
 
-st.title("Customer Churn Prediction with Explainable AI")
+st.title("Explainable Customer Churn Prediction with SHAP and Retention Strategy Engine")
 st.caption("Predict churn risk and understand key drivers using machine learning and SHAP.")
 
 
@@ -23,10 +23,10 @@ with st.sidebar:
 
 # ───────────────── Main logic ─────────────────
 if predict_btn:
-    # 1️⃣ Preprocess
+    # 1 Preprocess
     X_transformed = preprocess_input(user_input)
 
-    # 2️⃣ Predict
+    # 2 Predict
     prob, pred = predict_churn(X_transformed)
 
     st.subheader("Prediction Summary")
@@ -54,10 +54,10 @@ if predict_btn:
 
     st.caption("Decision threshold: 0.30")
 
-    # 3️⃣ SHAP (SAFE here)
+    # 3 SHAP (SAFE here)
     shap_vals = compute_shap(X_transformed)
 
-    # 4️⃣ Tabs
+    # 4 Tabs
     tab_explain, tab_actions = st.tabs(["Explanation", "Retention Actions"])
 
     # ───────── Explanation Tab ─────────
@@ -65,7 +65,7 @@ if predict_btn:
         st.subheader("Why did the model make this prediction?")
 
         fig = plot_waterfall(shap_vals, X_transformed)
-        st.pyplot(fig, width="stretch")
+        st.pyplot(fig)
 
         st.markdown(
             "The model's decision is influenced by a combination of customer engagement, "

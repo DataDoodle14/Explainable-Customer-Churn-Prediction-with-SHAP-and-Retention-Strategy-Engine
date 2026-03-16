@@ -1,7 +1,7 @@
 import joblib
 import numpy as np
 
-model = joblib.load("artifacts/model.pkl")
+model = joblib.load("churn_app/artifacts/model.pkl")
 
 THRESHOLD = 0.3
 

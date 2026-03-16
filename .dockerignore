@@ -1,0 +1,39 @@
+# ─────────────────────────────────────────────
+# .dockerignore — tells Docker what NOT to copy
+# into the container (keeps image size small)
+# ─────────────────────────────────────────────
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+.env/
+.venv/
+
+# Jupyter notebooks (not needed in production)
+notebooks/
+*.ipynb
+.ipynb_checkpoints/
+
+# Git files
+.git/
+.gitignore
+
+# Data files (too large for container — load separately)
+data/
+*.csv
+*.xlsx
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker files themselves
+# Dockerfile
+# docker-compose.yml

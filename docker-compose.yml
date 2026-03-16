@@ -1,0 +1,28 @@
+# ─────────────────────────────────────────────
+# docker-compose.yml — Customer Churn App
+# Run with: docker-compose up
+# Stop with: docker-compose down
+# ─────────────────────────────────────────────
+
+# version: "3.9"
+
+services:
+  churn-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: churn-prediction-app
+
+    ports:
+      - "8501:8501"
+
+    volumes:
+      - .:/app
+
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+
+    restart: unless-stopped
