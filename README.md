@@ -2,11 +2,12 @@
 
 <div align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![LightGBM](https://img.shields.io/badge/LightGBM-Model-10b981?style=for-the-badge)](https://lightgbm.readthedocs.io)
 [![SHAP](https://img.shields.io/badge/SHAP-Explainability-6366f1?style=for-the-badge)](https://shap.readthedocs.io)
-[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge\&logo=streamlit\&logoColor=white)](https://streamlit.io)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge\&logo=docker\&logoColor=white)](https://docker.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://hub.docker.com/r/datadoodle14/customer-churn)
+[![Docker Pulls](https://img.shields.io/docker/pulls/datadoodle14/customer-churn?style=for-the-badge&logo=docker)](https://hub.docker.com/r/datadoodle14/customer-churn)
 
 > Predict **who will churn**, explain **why**, and recommend **what to do about it**.
 
@@ -50,17 +51,15 @@ This project goes further and answers **three business-critical questions**:
 
 # Project Highlights
 
-✔ End-to-end ML pipeline from **EDA → training → explainability → deployment**
-✔ **Explainable AI using SHAP** for global and local model interpretation
-✔ **Retention strategy engine** translating SHAP insights into business actions
-✔ **Interactive Streamlit dashboard** for real-time predictions
-✔ **Dockerized deployment** for reproducibility and portability
+✔ End-to-end ML pipeline from **EDA → training → explainability → deployment**  
+✔ **Explainable AI using SHAP** for global and local model interpretation  
+✔ **Retention strategy engine** translating SHAP insights into business actions  
+✔ **Interactive Streamlit dashboard** for real-time predictions  
+✔ **Dockerized deployment** for reproducibility and portability  
 
 ---
 
 # System Architecture
-
-![System Architecture]
 
 ```
 User Input (Streamlit UI)
@@ -88,8 +87,6 @@ Score     Strategy
 
 # ML Pipeline Overview
 
-The project follows a complete machine learning lifecycle:
-
 ```
 Data Collection
       ↓
@@ -115,16 +112,16 @@ This pipeline ensures predictions remain **interpretable, reliable, and actionab
 
 # Tech Stack
 
-| Category              | Tools                            |
-| --------------------- | -------------------------------- |
-| Language              | Python 3.11                      |
-| ML Models             | LightGBM, Random Forest, XGBoost |
-| Explainability        | SHAP                             |
-| Hyperparameter Tuning | Optuna                           |
-| Data Processing       | Pandas, NumPy, Scikit-learn      |
-| Visualization         | Matplotlib, Seaborn              |
-| Frontend              | Streamlit                        |
-| Deployment            | Docker, Docker Compose           |
+| Category              | Tools                             |
+| --------------------- | --------------------------------- |
+| Language              | Python 3.11                       |
+| ML Models             | LightGBM, Random Forest, XGBoost  |
+| Explainability        | SHAP                              |
+| Hyperparameter Tuning | Optuna                            |
+| Data Processing       | Pandas, NumPy, Scikit-learn       |
+| Visualization         | Matplotlib, Seaborn               |
+| Frontend              | Streamlit                         |
+| Containerization      | Docker                            |
 
 ---
 
@@ -175,7 +172,6 @@ Customer_Churn_ExplainableAI/
 ├── notebooks/
 ├── data/
 ├── Dockerfile
-├── docker-compose.yml
 ├── .dockerignore
 ├── requirements.txt
 ├── .gitignore
@@ -186,35 +182,35 @@ Customer_Churn_ExplainableAI/
 
 # How to Run
 
-## Option 1 — Docker (Recommended)
-Clone the repository:
+## Option 1 — Docker Hub (Easiest — No Setup Needed!)
+
+```bash
+# Pull the image directly from Docker Hub
+docker pull datadoodle14/customer-churn
+
+# Run the app
+docker run -p 8501:8501 datadoodle14/customer-churn
+```
+
+Open the app at `http://localhost:8501`
+
+> 🐳 Docker image available at: [hub.docker.com/r/datadoodle14/customer-churn](https://hub.docker.com/r/datadoodle14/customer-churn)
+
+---
+
+## Option 2 — Build from Source
 
 ```bash
 git clone https://github.com/DataDoodle14/customer-churn-explainableai.git
 cd customer-churn-explainableai
-```
 
-Build and run:
-
-```bash
-docker compose up --build
-```
-
-Open the app:
-
-```
-http://localhost:8501
-```
-
-Stop the container:
-
-```bash
-docker-compose down
+docker build -t datadoodle14/customer-churn .
+docker run -p 8501:8501 datadoodle14/customer-churn
 ```
 
 ---
 
-## Option 2 — Run Locally
+## Option 3 — Run Locally (No Docker)
 
 ```bash
 git clone https://github.com/DataDoodle14/customer-churn-explainableai.git
@@ -222,8 +218,7 @@ cd customer-churn-explainableai
 
 pip install -r requirements.txt
 
-cd churn_app
-streamlit run app.py
+streamlit run churn_app/app.py
 ```
 
 ---
@@ -252,19 +247,15 @@ The decision threshold was set to **0.30** to capture more churners.
 # App Walkthrough
 
 ### Input Customer Details
-
 ![App Home](assets/screenshots/app_home.png)
 
 ### High-Risk Prediction
-
 ![High Risk](assets/screenshots/high_churn_risk_1.png)
 
 ### Retention Strategy
-
 ![Retention](assets/screenshots/high_churn_risk_2.png)
 
 ### Low-Risk Prediction
-
 ![Low Risk](assets/screenshots/low_churn_risk_1.png)
 
 ---
@@ -292,9 +283,8 @@ These insights help transform **model predictions into business decisions**.
 
 # Author
 
-**Krutika Malli**
-
-GitHub: https://github.com/DataDoodle14
+**Krutika Malli**  
+GitHub: [github.com/DataDoodle14](https://github.com/DataDoodle14)
 
 ---
 
